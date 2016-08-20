@@ -53,4 +53,9 @@
 
     "VisionDaytimeRange"    "1800"                  // Range of vision at night time.
     "VisionNighttimeRange"    "1800"                  // Range of vision at night time.
+
+    // Custom properties
+
+    "DET_Speed"             "150"               // Determines amount of time character spends in WAIT
+    "DET_Casting"           "0"                 // Boolean, determines whether character is casting an attack
   }
