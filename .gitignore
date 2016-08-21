@@ -23,3 +23,6 @@ game/dota_addons/dotacraft/resource/overviews/*
 
 #Github dump
 *.stackdump
+
+# Script snippets
+!game/dota_addons/Barebones-Turnbased/scripts/vscripts/snippets/*
