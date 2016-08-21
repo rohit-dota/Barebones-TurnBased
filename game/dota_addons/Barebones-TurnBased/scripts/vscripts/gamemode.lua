@@ -38,6 +38,7 @@ require('libraries/keyvalues')
 -- These internal libraries set up barebones's events and processes.  Feel free to inspect them/change them if you need to.
 require('internal/gamemode')
 require('internal/events')
+require('internal/turn_timers')
 
 -- settings.lua is where you can specify many different properties for your game mode and is one of the core barebones files.
 require('settings')
@@ -117,13 +118,15 @@ function GameMode:OnHeroInGame(hero)
   hero:RemoveAbility(abil:GetAbilityName())
   hero:AddAbility("example_ability")]]
 
-  local mudgolem_clone = CreateUnitByName("npc_mudgolem_clone", hero:GetAbsOrigin(), true, hero, hero, hero:GetTeamNumber()) 
-  -- siegecreep:SetOwner(PlayerResource(hero:GetPlayerID()))
-  mudgolem_clone:SetControllableByPlayer(hero:GetPlayerID(), true) 
-  -- CreateHeroForPlayer("npc_dota_hero_ancient_apparition_barebones", PlayerResource:GetPlayer(hero:GetPlayerID())) 
-  DebugPrint("[DET] unit label: " .. hero:GetUnitLabel())
+  -- local mudgolem_clone = CreateUnitByName("npc_mudgolem_clone", hero:GetAbsOrigin(), true, hero, hero, hero:GetTeamNumber()) 
+  -- -- siegecreep:SetOwner(PlayerResource(hero:GetPlayerID()))
+  -- mudgolem_clone:SetControllableByPlayer(hero:GetPlayerID(), true) 
+  -- -- CreateHeroForPlayer("npc_dota_hero_ancient_apparition_barebones", PlayerResource:GetPlayer(hero:GetPlayerID())) 
+  -- local mudgolem_clone2 = CreateUnitByName("npc_mudgolem_clone", hero:GetAbsOrigin(), true, hero, hero, hero:GetTeamNumber()) 
+  -- mudgolem_clone2:SetControllableByPlayer(hero:GetPlayerID(), true) 
+  -- DebugPrint("[DET] unit name: " .. mudgolem_clone:GetUnitName())
 
-  DebugPrint("[DET] DET_Speed: " .. GetKeyValue("npc_dota_hero_ancient_apparition_barebones", "DET_Speed"))
+  -- DebugPrint("[DET] DET_Speed: " .. GetKeyValue("npc_mudgolem_clone", "DET_Speed"))
 
   -- code for setting up hero timers here
   -- for k, v in pairs(hero) do
@@ -149,6 +152,18 @@ function GameMode:OnGameInProgress()
       DebugPrint("This function is called 30 seconds after the game begins, and every 30 seconds thereafter")
       return 30.0 -- Rerun this timer every 30 game-time seconds 
     end)
+
+  DebugPrint("[DET] Creating a mudgolem_clone for each player")
+
+  local players = {}
+  for i=1, DOTA_MAX_PLAYERS do
+    local player = PlayerInstanceFromIndex(i)
+    if player and player:IsPlayer() then
+      local mudgolem_clone = CreateUnitByName("npc_mudgolem_clone", Vector(0, 0, 0), true, nil, nil, player:GetTeamNumber()) 
+      mudgolem_clone:SetControllableByPlayer(player:GetPlayerID(), true)
+      table.insert(turn_timers, mudgolem_clone)
+    end
+  end
 
   -- local heroes = {}
   -- for i=1, DOTA_MAX_PLAYERS do
