@@ -55,5 +55,11 @@
 	
 	    "VisionDaytimeRange"    "1800"                  // Range of vision at night time.
 	    "VisionNighttimeRange"    "1800"                  // Range of vision at night time.
+	
+	    // Custom properties
+	
+	    "UnitLabel"             "npc_dota_hero_ancient_apparition_barebones" // Custom hero name
+	    "DET_Speed"             "150.0"               // Determines amount of time character spends in WAIT
+	    "DET_Casting"           "0"                 // Boolean, determines whether character is casting an attack
 	  }
 }
