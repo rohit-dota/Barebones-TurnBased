@@ -18,7 +18,7 @@
 			"Target"		"TARGET"
 			"Type"			"DAMAGE_TYPE_MAGICAL"
 			"Damage"		"%AbilityDamage"
-		}"
+		}
 	}
 	
 }
