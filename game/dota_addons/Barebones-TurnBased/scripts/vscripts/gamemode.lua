@@ -32,6 +32,8 @@ require('libraries/modmaker')
 require('libraries/pathgraph')
 -- This library (by Noya) provides player selection inspection and management from server lua
 require('libraries/selection')
+-- This library (by Noya) provides the ability to make and use custom KV files
+require('libraries/keyvalues')
 
 -- These internal libraries set up barebones's events and processes.  Feel free to inspect them/change them if you need to.
 require('internal/gamemode')
@@ -96,6 +98,7 @@ end
   levels, changing the starting gold, removing/adding abilities, adding physics, etc.
 
   The hero parameter is the hero entity that just spawned in
+  This is a table
 ]]
 function GameMode:OnHeroInGame(hero)
   DebugPrint("[BAREBONES] Hero spawned in game for first time -- " .. hero:GetUnitName())
@@ -113,6 +116,24 @@ function GameMode:OnHeroInGame(hero)
   local abil = hero:GetAbilityByIndex(1)
   hero:RemoveAbility(abil:GetAbilityName())
   hero:AddAbility("example_ability")]]
+
+  local mudgolem_clone = CreateUnitByName("npc_mudgolem_clone", hero:GetAbsOrigin(), true, hero, hero, hero:GetTeamNumber()) 
+  -- siegecreep:SetOwner(PlayerResource(hero:GetPlayerID()))
+  mudgolem_clone:SetControllableByPlayer(hero:GetPlayerID(), true) 
+  -- CreateHeroForPlayer("npc_dota_hero_ancient_apparition_barebones", PlayerResource:GetPlayer(hero:GetPlayerID())) 
+  DebugPrint("[DET] unit label: " .. hero:GetUnitLabel())
+
+  DebugPrint("[DET] DET_Speed: " .. GetKeyValue("npc_dota_hero_ancient_apparition_barebones", "DET_Speed"))
+
+  -- code for setting up hero timers here
+  -- for k, v in pairs(hero) do
+  --   DebugPrint(k, v)
+  -- end
+  -- DebugPrint("Level: " .. hero:GetLevel())
+  -- DebugPrint("Health: " .. hero:GetHealth())
+  -- DebugPrint("Mana: " .. hero:GetMana())
+  -- local speed = hero:GetKeyValue("DET_Speed")
+  -- DebugPrint("DET Speed of " .. hero:GetUnitName() .. " is " .. speed)
 end
 
 --[[
@@ -128,6 +149,20 @@ function GameMode:OnGameInProgress()
       DebugPrint("This function is called 30 seconds after the game begins, and every 30 seconds thereafter")
       return 30.0 -- Rerun this timer every 30 game-time seconds 
     end)
+
+  -- local heroes = {}
+  -- for i=1, DOTA_MAX_PLAYERS do
+  --     local player = PlayerInstanceFromIndex(i)
+  --     if player and player:IsPlayer() then
+  --       table.insert(heroes, player:GetAssignedHero())
+  --     end
+  -- end
+
+  -- for i, hero in pairs(heroes) do
+  --     local speed = hero:GetKeyValue("ArmorPhysical")
+  --     DebugPrint("DET Speed of this hero is " .. speed)
+  -- end
+
 end
 
 
