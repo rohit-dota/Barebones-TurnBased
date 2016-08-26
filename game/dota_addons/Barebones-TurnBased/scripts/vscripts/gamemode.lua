@@ -38,12 +38,17 @@ require('libraries/keyvalues')
 -- These internal libraries set up barebones's events and processes.  Feel free to inspect them/change them if you need to.
 require('internal/gamemode')
 require('internal/events')
-require('internal/turn_timers')
 
 -- settings.lua is where you can specify many different properties for your game mode and is one of the core barebones files.
 require('settings')
 -- events.lua is where you can specify the actions to be taken when any event occurs and is one of the core barebones files.
 require('events')
+
+
+-- turn timer library
+require('turn_timers')
+-- round library
+require('round')
 
 
 -- This is a detailed example of many of the containers.lua possibilities, but only activates if you use the provided "playground" map
@@ -159,11 +164,14 @@ function GameMode:OnGameInProgress()
   for i=1, DOTA_MAX_PLAYERS do
     local player = PlayerInstanceFromIndex(i)
     if player and player:IsPlayer() then
-      local mudgolem_clone = CreateUnitByName("npc_mudgolem_clone", Vector(0, 0, 0), true, nil, nil, player:GetTeamNumber()) 
+      local mudgolem_clone = CreateUnitByName("npc_mudgolem_clone", Vector(0, 0, 0), true, nil, nil, player:GetTeamNumber())
+      DebugPrint("[DET] Speed of " .. mudgolem_clone:GetUnitName() .. " is " .. mudgolem_clone:GetKeyValue("DET_Speed"))
       mudgolem_clone:SetControllableByPlayer(player:GetPlayerID(), true)
       table.insert(turn_timers, mudgolem_clone)
     end
   end
+
+  local score_golem = CreateUnitByName("npc_mudgolem_clone", Vector(0, 0, 0), true, nil, nil, -1)
 
   -- local heroes = {}
   -- for i=1, DOTA_MAX_PLAYERS do

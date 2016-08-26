@@ -239,9 +239,20 @@ function GameMode:OnEntityKilled( keys )
 
   local damagebits = keys.damagebits -- This might always be 0 and therefore useless
 
-  if killedUnit:GetName() == "game_ending_hellbear" then
-    DebugPrint("game ending hellbear killed")
-    GameRules:SetGameWinner(killerEntity:GetTeam())
+  DebugPrint("[DET] unit with label " .. killedUnit:GetUnitLabel() .. "killed")
+
+  if killedUnit:GetUnitLabel() == "score_golem" then
+    -- change this to end the round
+    round_score = round_score + 1
+    DebugPrint("[DET] round score: " .. round_score)
+    if round_score >= 2 then
+      GameRules:SetGameWinner(killerEntity:GetTeam())
+    else
+      ShowEndRoundScreen()
+    end
+
+    replacement = CreateUnitByName("npc_mudgolem_clone", killedUnit:GetAbsOrigin(), true, nil, nil, -1)
+
   end
 
   -- Put code here to handle when an entity gets killed
