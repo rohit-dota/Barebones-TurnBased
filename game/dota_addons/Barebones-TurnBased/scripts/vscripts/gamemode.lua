@@ -10,6 +10,8 @@ if GameMode == nil then
     _G.GameMode = class({})
 end
 
+-- worldpanels
+require('libraries/worldpanels')
 -- This library allow for easily delayed/timed actions
 require('libraries/timers')
 -- This library can be used for advancted physics/motion/collision of units.  See PhysicsReadme.txt for more information.
@@ -108,6 +110,7 @@ end
 ]]
 function GameMode:OnHeroInGame(hero)
   DebugPrint("[BAREBONES] Hero spawned in game for first time -- " .. hero:GetUnitName())
+  hero:RemoveSelf()
 
   -- This line for example will set the starting gold of every hero to 500 unreliable gold
   --hero:SetGold(500, false)
@@ -137,9 +140,6 @@ function GameMode:OnHeroInGame(hero)
   -- for k, v in pairs(hero) do
   --   DebugPrint(k, v)
   -- end
-  -- DebugPrint("Level: " .. hero:GetLevel())
-  -- DebugPrint("Health: " .. hero:GetHealth())
-  -- DebugPrint("Mana: " .. hero:GetMana())
   -- local speed = hero:GetKeyValue("DET_Speed")
   -- DebugPrint("DET Speed of " .. hero:GetUnitName() .. " is " .. speed)
 end
@@ -166,8 +166,9 @@ function GameMode:OnGameInProgress()
     if player and player:IsPlayer() then
       local mudgolem_clone = CreateUnitByName("npc_mudgolem_clone", Vector(0, 0, 0), true, nil, nil, player:GetTeamNumber())
       DebugPrint("[DET] Speed of " .. mudgolem_clone:GetUnitName() .. " is " .. mudgolem_clone:GetKeyValue("DET_Speed"))
-      mudgolem_clone:SetControllableByPlayer(player:GetPlayerID(), true)
+      -- mudgolem_clone:SetControllableByPlayer(player:GetPlayerID(), true)
       table.insert(turn_timers, mudgolem_clone)
+      StartTimer(mudgolem_clone)
     end
   end
 
